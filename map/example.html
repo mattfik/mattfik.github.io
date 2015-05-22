@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Animate a route between two points in Google Maps</title>
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script data-main="js/main" src="js/require.js"></script>
+
+  </head>
+  <body>
+
+    <div class="map"></div>
+
+    <div class="row menu">
+      <div class="text-wrapper">
+        <h2>Controls</h2>
+        <p>Push the "Draw Route" button and click a path for yourself.</p>
+        <p>Push the "Print Route" button to get your coordinate set.</p>
+        <p>Click and hold to drag. Scroll wheel to zoom.</p>
+      </div>
+      <div class="btn-wrapper">
+        <button id="js-animate-btn" type="button" class="btn btn-default ">Animate Route</button>
+        <button id="js-draw-btn" type="button" class="btn btn-default ">Draw Route</button>
+        <button id="js-print-btn" type="button" class="btn btn-default ">Print Route</button>
+        <!-- <button id="js-center-btn" type="button" class="btn btn-default ">Center Map</button> -->
+      </div>
+    <div>
+
+    <script>
+      require(['./app/route', './app/draw'], function(Route, Draw){
+        var route = new Route();
+        var draw  = new Draw(route); // NOTE: passing route could cause a race condition if the tiles take a long time to load
+
+        var animateBtn  = document.getElementById('js-animate-btn');
+        var drawBtn     = document.getElementById('js-draw-btn');
+        var printBtn    = document.getElementById('js-print-btn');
+        // var centerBtn   = document.getElementById('js-center-btn');
+
+        animateBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          route.playAnimation();
+        });
+
+        drawBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          draw.drawPath();
+        });
+
+        printBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          draw.printPathData();
+        });
+
+        // centerBtn.addEventListener('click', function(e) {
+        //   e.preventDefault();
+        //   route.centerMap();
+        // });
+      });
+    </script>
+
+  </body>
+</html>
